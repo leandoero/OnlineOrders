@@ -16,6 +16,7 @@ builder.Services.AddDbContext<OnlineOrdersDbContext>(options=>options.UseSqlServ
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 builder.Services.AddScoped<IProductRepository, SQLProductRepository>();
+builder.Services.AddScoped<IClientRepository, SQLClientRepository>();
 
 var app = builder.Build();
 

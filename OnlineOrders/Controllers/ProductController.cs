@@ -14,13 +14,11 @@ namespace OnlineOrders.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IMapper mapper;
-        private readonly OnlineOrdersDbContext dbContext;
         private readonly IProductRepository repository;
 
-        public ProductController(IMapper mapper, OnlineOrdersDbContext dbContext, IProductRepository repository)
+        public ProductController(IMapper mapper,IProductRepository repository)
         {
             this.mapper = mapper;
-            this.dbContext = dbContext;
             this.repository = repository;
         }
 

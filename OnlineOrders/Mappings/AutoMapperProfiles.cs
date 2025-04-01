@@ -11,6 +11,8 @@ namespace OnlineOrders.Mappings
             CreateMap<Product, ProductDto>().ReverseMap();
             CreateMap<Product, AddProductDto>().ReverseMap();
             CreateMap<Product, UpdateProductDto>().ReverseMap();
+            CreateMap<Client, ClientDto>().ReverseMap();
+            CreateMap<Client, AddClientDto>().ReverseMap();
         }
     }
 }
