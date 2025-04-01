@@ -47,14 +47,13 @@ namespace OnlineOrders.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostProduct([FromBody] AddProductDto addProductDto)
+        public async Task<IActionResult> AddProduct([FromBody] AddProductDto addProductDto)
         {
             //map dto to domain model
             var productDomain = mapper.Map<Product>(addProductDto);
 
             //use domain model to create
-            await dbContext.Products.AddAsync(productDomain);
-            await dbContext.SaveChangesAsync();
+            productDomain = await repository.AddAsync(productDomain);
 
             //map domain to dto
             var productDto = mapper.Map<ProductDto>(productDomain);
@@ -65,18 +64,14 @@ namespace OnlineOrders.Controllers
         [Route("{id::guid}")]
         public async Task<IActionResult> UpdateProduct([FromRoute] Guid id, [FromBody] UpdateProductDto updateProductDto)
         {
-            var productDomain = await dbContext.Products.FindAsync(id);
 
+            var productDomain = mapper.Map<Product>(updateProductDto);
+
+            productDomain = await repository.UpdateAsync(id, productDomain);
             if (productDomain == null)
             {
                 return NotFound();
             }
-
-            productDomain.Name = updateProductDto.Name;
-            productDomain.Price = updateProductDto.Price;
-            productDomain.Description = updateProductDto.Description;
-
-            await dbContext.SaveChangesAsync();
 
             //map domain model to dto
             var productDto = mapper.Map<ProductDto>(productDomain);
@@ -88,14 +83,11 @@ namespace OnlineOrders.Controllers
         [Route("{id:guid}")]
         public async Task<IActionResult> DeleteProductById([FromRoute] Guid id)
         {
-            var productDomain = await dbContext.Products.FindAsync(id);
+            var productDomain = await repository.DeleteAsync(id);
             if (productDomain == null)
             {
                 return NotFound();
             }
-            dbContext.Products.Remove(productDomain);
-            await dbContext.SaveChangesAsync();
-
             var productDto = mapper.Map<ProductDto>(productDomain);
             return Ok(productDto);
         }

@@ -1,4 +1,4 @@
-﻿using OnlineOrders.Models.Domain
+﻿using OnlineOrders.Models.Domain;
 
 namespace OnlineOrders.Repository
 {

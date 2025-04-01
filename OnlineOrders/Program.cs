@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using OnlineOrders.Data;
 using OnlineOrders.Mappings;
+using OnlineOrders.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<OnlineOrdersDbContext>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("OnlineOrdersConnectionString")));
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
+builder.Services.AddScoped<IProductRepository, SQLProductRepository>();
 
 var app = builder.Build();
 
