@@ -15,7 +15,7 @@ namespace OnlineOrders.Repository
 
         public async Task<List<Client>> GetAllAsync()
         {
-            return await dbContext.Clients.ToListAsync();
+            return await dbContext.Clients.Include("Product").Include("OrderStatus").ToListAsync();
         }
 
         public async Task<Client> AddAsync(Client client)

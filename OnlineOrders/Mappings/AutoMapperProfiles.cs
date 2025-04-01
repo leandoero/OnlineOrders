@@ -13,6 +13,7 @@ namespace OnlineOrders.Mappings
             CreateMap<Product, UpdateProductDto>().ReverseMap();
             CreateMap<Client, ClientDto>().ReverseMap();
             CreateMap<Client, AddClientDto>().ReverseMap();
+            CreateMap<OrderStatus, OrderStatusDto>().ReverseMap();
         }
     }
 }
