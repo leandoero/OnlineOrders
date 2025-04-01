@@ -36,7 +36,7 @@ namespace OnlineOrders.Controllers
         [Route("{id::guid}")]
         public async Task<IActionResult> GetProductById([FromRoute] Guid id)
         {
-            var regionDomain = await dbContext.Products.FindAsync(id);
+            var regionDomain = await repository.GetByIdAsync(id);
             if (regionDomain == null)
             {
                 return NotFound();

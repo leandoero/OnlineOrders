@@ -16,6 +16,15 @@ namespace OnlineOrders.Repository
         {
             return await dbContext.Products.ToListAsync();
         }
+        public async Task<Product?> GetByIdAsync(Guid id)
+        {
+            var product = await dbContext.Products.FindAsync(id);
+            if(product == null)
+            {
+                return null;
+            }
+            return product;
+        }
     }
 
 }
