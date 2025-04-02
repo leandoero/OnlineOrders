@@ -6,6 +6,7 @@ using OnlineOrders.Models.DTO;
 using OnlineOrders.Models.Domain;
 using OnlineOrders.Data;
 using OnlineOrders.Repository;
+using OnlineOrders.CustomActionFilters;
 
 namespace OnlineOrders.Controllers
 {
@@ -45,6 +46,7 @@ namespace OnlineOrders.Controllers
         }
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> AddProduct([FromBody] AddProductDto addProductDto)
         {
             //map dto to domain model
@@ -58,8 +60,10 @@ namespace OnlineOrders.Controllers
 
             return CreatedAtAction(nameof(GetProductById), new { id = productDto.Id }, productDto);
         }
+
         [HttpPut]
         [Route("{id::guid}")]
+        [ValidateModel]
         public async Task<IActionResult> UpdateProduct([FromRoute] Guid id, [FromBody] UpdateProductDto updateProductDto)
         {
 

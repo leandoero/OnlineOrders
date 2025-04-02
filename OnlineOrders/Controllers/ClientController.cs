@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Metadata;
 using Microsoft.AspNetCore.Mvc;
+using OnlineOrders.CustomActionFilters;
 using OnlineOrders.Models.Domain;
 using OnlineOrders.Models.DTO;
 using OnlineOrders.Repository;
@@ -31,6 +32,7 @@ namespace OnlineOrders.Controllers
         }
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> CreateClient([FromBody] AddClientDto addClientDto)
         {
             var clientDomain = mapper.Map<Client>(addClientDto);
@@ -54,6 +56,7 @@ namespace OnlineOrders.Controllers
 
         [HttpPut]
         [Route("{id:guid}")]
+        [ValidateModel]
         public async Task<IActionResult> UpdateClient([FromRoute] Guid id, [FromBody] UpdateClientDto updateClientDto)
         {
             var clientDomain = mapper.Map<Client>(updateClientDto);
