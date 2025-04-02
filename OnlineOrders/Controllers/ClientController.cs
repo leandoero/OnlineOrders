@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Metadata;
 using Microsoft.AspNetCore.Mvc;
 using OnlineOrders.Models.Domain;
 using OnlineOrders.Models.DTO;
@@ -38,5 +39,48 @@ namespace OnlineOrders.Controllers
             return Ok(clientDto);
         }
 
+        [HttpGet]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> GetClient(Guid id)
+        {
+            var clientDomain = await clientRepository.GetByIdAsync(id);
+            if (clientDomain == null)
+            {
+                return NotFound();
+            }
+            var clientDto = mapper.Map<ClientDto>(clientDomain);
+            return Ok(clientDto);
+        }
+
+        [HttpPut]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> UpdateClient([FromRoute] Guid id, [FromBody] UpdateClientDto updateClientDto)
+        {
+            var clientDomain = mapper.Map<Client>(updateClientDto);
+
+            clientDomain = await clientRepository.UpdateAsync(id, clientDomain);
+
+            if(clientDomain == null)
+            {
+                return NotFound();
+            }
+
+            var clientDto = mapper.Map<UpdateClientDto>(clientDomain);
+
+            return Ok(clientDto);
+        }
+
+        [HttpDelete]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> DeleteClient([FromRoute] Guid id)
+        {
+            var clientDomain = await clientRepository.DeleteAsync(id);
+            if(clientDomain == null)
+            {
+                return NotFound();
+            }
+            var clientDto = mapper.Map<DeleteClientDto>(clientDomain);
+            return Ok(clientDto);
+        }
     }
 }
