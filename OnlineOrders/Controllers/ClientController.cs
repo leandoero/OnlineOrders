@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Metadata;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Logging;
 using OnlineOrders.CustomActionFilters;
 using OnlineOrders.Models.Domain;
 using OnlineOrders.Models.DTO;
@@ -23,9 +24,10 @@ namespace OnlineOrders.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetClients()
+        public async Task<IActionResult> GetClients([FromQuery] string? filterBy = null, [FromQuery] string? filterQuery = null,
+            [FromQuery] string? sortBy = null, [FromQuery] bool? isAscending = null)
         {
-            var clientsDomain = await clientRepository.GetAllAsync();
+            var clientsDomain = await clientRepository.GetAllAsync(filterBy, filterQuery, sortBy, isAscending ?? true);
             //domain model to dto
             var clientsDto = mapper.Map<List<ClientDto>>(clientsDomain);
             return Ok(clientsDto);

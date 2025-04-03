@@ -11,9 +11,30 @@ namespace OnlineOrders.Repository
         {
             this.dbContext = dbContext;
         }
-        public async Task<List<Client>> GetAllAsync()
+        public async Task<List<Client>> GetAllAsync(string? filterBy, string? filterQuery, string? sortBy, bool isAscending)
         {
-            return await dbContext.Clients.Include("Product").Include("OrderStatus").ToListAsync();
+            var clients = dbContext.Clients.Include("Product").Include("OrderStatus").AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(filterBy) && !string.IsNullOrWhiteSpace(filterQuery))
+            {
+                if(filterBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    clients = clients.Where(x => x.Name.Contains(filterQuery));
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(sortBy))
+            {
+                if(sortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    clients = isAscending ? clients.OrderBy(x => x.Name):clients.OrderByDescending(x => x.Name);
+                }
+                else if(sortBy.Equals("Price", StringComparison.OrdinalIgnoreCase))
+                {
+                    clients = isAscending ? clients.OrderBy(x => x.Product.Price) : clients.OrderByDescending(x => x.Product.Price);
+                }
+            }
+            return await clients.ToListAsync();
         }
         public async Task<Client> AddAsync(Client client)
         {
