@@ -26,8 +26,8 @@ namespace OnlineOrders.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProducts(string? filterOn = null, string? filterQuery = null, string? sortBy = null, bool? isAscending = null,
-            int pageNumber = 1, int pageSize = 1000)
+        public async Task<IActionResult> GetProducts([FromQuery] string? filterOn = null, [FromQuery] string? filterQuery = null, [FromQuery] string? sortBy = null, [FromQuery] bool? isAscending = null,
+            [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 1000)
         {
             var productsDomain = await repository.GetAllAsync(filterOn, filterQuery, sortBy, isAscending ?? true, pageNumber, pageSize);
             var productsDto = mapper.Map<List<ProductDto>>(productsDomain);
