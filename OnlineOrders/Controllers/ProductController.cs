@@ -7,6 +7,8 @@ using OnlineOrders.Models.Domain;
 using OnlineOrders.Data;
 using OnlineOrders.Repository;
 using OnlineOrders.CustomActionFilters;
+using System.Globalization;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace OnlineOrders.Controllers
 {
@@ -24,9 +26,10 @@ namespace OnlineOrders.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProducts()
+        public async Task<IActionResult> GetProducts(string? filterOn = null, string? filterQuery = null, string? sortBy = null, bool? isAscending = null,
+            int pageNumber = 1, int pageSize = 1000)
         {
-            var productsDomain = await repository.GetAllAsync();
+            var productsDomain = await repository.GetAllAsync(filterOn, filterQuery, sortBy, isAscending ?? true, pageNumber, pageSize);
             var productsDto = mapper.Map<List<ProductDto>>(productsDomain);
             return Ok(productsDto);
         }
