@@ -25,9 +25,9 @@ namespace OnlineOrders.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetClients([FromQuery] string? filterBy = null, [FromQuery] string? filterQuery = null,
-            [FromQuery] string? sortBy = null, [FromQuery] bool? isAscending = null)
+            [FromQuery] string? sortBy = null, [FromQuery] bool? isAscending = null, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 1000)
         {
-            var clientsDomain = await clientRepository.GetAllAsync(filterBy, filterQuery, sortBy, isAscending ?? true);
+            var clientsDomain = await clientRepository.GetAllAsync(filterBy, filterQuery, sortBy, isAscending ?? true, pageNumber, pageSize);
             //domain model to dto
             var clientsDto = mapper.Map<List<ClientDto>>(clientsDomain);
             return Ok(clientsDto);

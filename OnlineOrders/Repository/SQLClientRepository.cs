@@ -11,7 +11,7 @@ namespace OnlineOrders.Repository
         {
             this.dbContext = dbContext;
         }
-        public async Task<List<Client>> GetAllAsync(string? filterBy, string? filterQuery, string? sortBy, bool isAscending)
+        public async Task<List<Client>> GetAllAsync(string? filterBy, string? filterQuery, string? sortBy, bool isAscending, int pageNumber, int pageSize)
         {
             var clients = dbContext.Clients.Include("Product").Include("OrderStatus").AsQueryable();
 
@@ -34,7 +34,10 @@ namespace OnlineOrders.Repository
                     clients = isAscending ? clients.OrderBy(x => x.Product.Price) : clients.OrderByDescending(x => x.Product.Price);
                 }
             }
-            return await clients.ToListAsync();
+
+            var skip = (pageNumber - 1) * pageSize;
+
+            return await clients.Skip(skip).Take(pageSize).ToListAsync();
         }
         public async Task<Client> AddAsync(Client client)
         {
