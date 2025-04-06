@@ -5,7 +5,7 @@ namespace OnlineOrders.Data
 {
     public class OnlineOrdersDbContext : DbContext
     {
-        public OnlineOrdersDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions) { }
+        public OnlineOrdersDbContext(DbContextOptions<OnlineOrdersDbContext> dbContextOptions) : base(dbContextOptions) { }
 
         public DbSet<Client> Clients { get; set; }
         public DbSet<OrderStatus> OrderStatuses { get; set; }
